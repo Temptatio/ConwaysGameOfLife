@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -35,6 +36,10 @@ public class GameOfLifeMaske extends JFrame {
 	private JButton btnStart;
 	private JLabel lblBesetzungsdichte;
 	private JFormattedTextField formattedTextField_2;
+	private JCheckBox chckbxPeriodischeRandbedingungen;
+	private JCheckBox chckbxEntwicklungenBisZum;
+	private JLabel lblGenerationen;
+	private JFormattedTextField formattedTextField_3;
 
 	/**
 	 * Create the frame.
@@ -168,12 +173,49 @@ public class GameOfLifeMaske extends JFrame {
 		gbc_comboBox.gridy = 4;
 		jPanelEinstellungen.add(comboBox, gbc_comboBox);
 		
+		chckbxEntwicklungenBisZum = new JCheckBox("Entwicklung bis zum Tod");
+		GridBagConstraints gbc_chckbxEntwicklungenBisZum = new GridBagConstraints();
+		gbc_chckbxEntwicklungenBisZum.anchor = GridBagConstraints.EAST;
+		gbc_chckbxEntwicklungenBisZum.gridwidth = 2;
+		gbc_chckbxEntwicklungenBisZum.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxEntwicklungenBisZum.gridx = 0;
+		gbc_chckbxEntwicklungenBisZum.gridy = 5;
+		jPanelEinstellungen.add(chckbxEntwicklungenBisZum, gbc_chckbxEntwicklungenBisZum);
+		
+		lblGenerationen = new JLabel("Generationen");
+		lblGenerationen.setEnabled(false);
+		GridBagConstraints gbc_lblGenerationen = new GridBagConstraints();
+		gbc_lblGenerationen.anchor = GridBagConstraints.EAST;
+		gbc_lblGenerationen.insets = new Insets(0, 0, 5, 5);
+		gbc_lblGenerationen.gridx = 0;
+		gbc_lblGenerationen.gridy = 6;
+		jPanelEinstellungen.add(lblGenerationen, gbc_lblGenerationen);
+		
+		formattedTextField_3 = new JFormattedTextField();
+		formattedTextField_3.setHorizontalAlignment(SwingConstants.RIGHT);
+		formattedTextField_3.setEnabled(false);
+		formattedTextField_3.setText("1000");
+		GridBagConstraints gbc_formattedTextField_3 = new GridBagConstraints();
+		gbc_formattedTextField_3.insets = new Insets(0, 0, 5, 0);
+		gbc_formattedTextField_3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_formattedTextField_3.gridx = 1;
+		gbc_formattedTextField_3.gridy = 6;
+		jPanelEinstellungen.add(formattedTextField_3, gbc_formattedTextField_3);
+		
+		chckbxPeriodischeRandbedingungen = new JCheckBox("Periodische Randbedingungen");
+		GridBagConstraints gbc_chckbxPeriodischeRandbedingungen = new GridBagConstraints();
+		gbc_chckbxPeriodischeRandbedingungen.anchor = GridBagConstraints.EAST;
+		gbc_chckbxPeriodischeRandbedingungen.gridwidth = 2;
+		gbc_chckbxPeriodischeRandbedingungen.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxPeriodischeRandbedingungen.gridx = 0;
+		gbc_chckbxPeriodischeRandbedingungen.gridy = 7;
+		jPanelEinstellungen.add(chckbxPeriodischeRandbedingungen, gbc_chckbxPeriodischeRandbedingungen);
+		
 		btnStart = new JButton("Start");
 		GridBagConstraints gbc_btnStart = new GridBagConstraints();
-		gbc_btnStart.insets = new Insets(0, 0, 5, 0);
 		gbc_btnStart.gridwidth = 2;
 		gbc_btnStart.gridx = 0;
-		gbc_btnStart.gridy = 7;
+		gbc_btnStart.gridy = 8;
 		jPanelEinstellungen.add(btnStart, gbc_btnStart);
 	}
 	

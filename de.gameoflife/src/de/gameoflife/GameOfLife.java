@@ -4,35 +4,33 @@ import java.awt.image.BufferedImage;
 
 public class GameOfLife {
 
-	private static final int	XDEFAULT			= 100;
-	private static final int	YDEFAULT			= 100;
-	private static final int	MAXBESETZTDEFAULT	= 30;
-	
-	private int xDim;
-	private int yDim;
-	private int initialeBesetzung;
-	
+	Gittereigenschaften		gittereigenschaften;
+	GameOfLifeEigenschaften	gameOfLifeEigenschaften;
+
 	private Gitter gitter;
-	
-	public GameOfLife(int xDim, int yDim, int initialeBesetzung) {
-		this.xDim = xDim;
-		this.yDim = yDim;
-		this.initialeBesetzung = initialeBesetzung;
-		
-		this.gitter = new Gitter(xDim, yDim, initialeBesetzung);
+
+	public GameOfLife(Gittereigenschaften gittereigenschaften,
+			GameOfLifeEigenschaften gameOfLifeEigenschaften) {
+		this.gittereigenschaften = gittereigenschaften;
+		this.gameOfLifeEigenschaften = gameOfLifeEigenschaften;
+
+		this.gitter = new Gitter(gittereigenschaften);
+
 		this.init();
 	}
 
 	private void init() {
-		
+
 		Zufallsgenerator zufallsgenerator = new Zufallsgenerator();
 		int besetzt = 0;
-		
-		while(!isVoll(besetzt)) {
-			int x = zufallsgenerator.getZufallskoordinate(0, this.xDim);
-			int y = zufallsgenerator.getZufallskoordinate(0, this.yDim);
-			
-			if(!this.gitter.getElement(x, y)) {
+
+		while (!isVoll(besetzt)) {
+			int x = zufallsgenerator.getZufallskoordinate(0,
+					this.gittereigenschaften.getXDimension());
+			int y = zufallsgenerator.getZufallskoordinate(0,
+					this.gittereigenschaften.getYDimension());
+
+			if (!this.gitter.getElement(x, y)) {
 				this.gitter.setElement(x, y, true);
 				++besetzt;
 			}
@@ -40,15 +38,19 @@ public class GameOfLife {
 	}
 
 	private boolean isVoll(int besetzt) {
-		return this.initialeBesetzung == besetzt;
+		int maxBesetzung = this.gameOfLifeEigenschaften
+				.getInitialeBesetzungsdichte()
+				* this.gittereigenschaften.getXDimension()
+				* this.gittereigenschaften.getYDimension();
+		return maxBesetzung == besetzt;
 	}
 
 	public void naechsteGeneration() {
 
-		Gitter neuesGitter = new Gitter(this.xDim, this.yDim, 0);
+		Gitter neuesGitter = new Gitter(this.gittereigenschaften);
 
-		for (int i = 0; i < this.xDim; ++i) {
-			for (int j = 0; j < this.yDim; ++j) {
+		for (int i = 0; i < this.gittereigenschaften.getXDimension(); ++i) {
+			for (int j = 0; j < this.gittereigenschaften.getYDimension(); ++j) {
 				int l = (this.gitter.getElement(i - 1, j)) ? 1 : 0;
 				int lo = (this.gitter.getElement(i - 1, j + 1)) ? 1 : 0;
 				int mo = (this.gitter.getElement(i, j + 1)) ? 1 : 0;
@@ -59,10 +61,11 @@ public class GameOfLife {
 				int lu = (this.gitter.getElement(i - 1, j - 1)) ? 1 : 0;
 
 				int besetzteNachbarn = l + lo + mo + ro + r + ru + mu + lu;
-				
+
 				switch (besetzteNachbarn) {
 					case 2:
-						neuesGitter.setElement(i, j, true && this.gitter.getElement(i, j));
+						neuesGitter.setElement(i, j,
+								true && this.gitter.getElement(i, j));
 						break;
 					case 3:
 						neuesGitter.setElement(i, j, true);
@@ -76,7 +79,15 @@ public class GameOfLife {
 
 		this.gitter = neuesGitter;
 	}
-	
+
+	public int getLebensdauer() {
+		return this.gameOfLifeEigenschaften.getLebensdauer();
+	}
+
+	public void setLebensdauer(int lebensdauer) {
+		this.gameOfLifeEigenschaften.setLebensdauer(lebensdauer);
+	}
+
 	public BufferedImage GitterAlsBild() {
 		return this.gitter.getAlsBild();
 	}

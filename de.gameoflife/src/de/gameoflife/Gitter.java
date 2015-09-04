@@ -6,13 +6,11 @@ public class Gitter {
 
 	private final int	xDim;
 	private final int	yDim;
-	private final int	maxBesetzt;
 	private boolean[]	gitter;
 
-	public Gitter(int xDim, int yDim, int maxBesetzt) {
-		this.xDim = xDim;
-		this.yDim = yDim;
-		this.maxBesetzt = maxBesetzt;
+	public Gitter(Gittereigenschaften gittereigenschaften) {
+		this.xDim = gittereigenschaften.getXDimension();
+		this.yDim = gittereigenschaften.getYDimension();
 		this.gitter = new boolean[this.xDim * this.yDim];
 	}
 
@@ -47,10 +45,6 @@ public class Gitter {
 		}
 	}
 
-	private boolean[] getGitter() {
-		return this.gitter;
-	}
-	
 	public BufferedImage getAlsBild() {
 		BufferedImage gitterAlsBild = new BufferedImage(this.xDim*4, this.yDim*4, BufferedImage.TYPE_INT_RGB);
 		

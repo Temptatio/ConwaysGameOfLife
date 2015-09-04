@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.DefaultComboBoxModel;
@@ -30,21 +32,26 @@ public class GameOfLifeMaske extends JFrame {
 	private JLabel lblDimensionyrichtung;
 	private JLabel lblLebensdauerms;
 	private JLabel lblAnfangsverteilung;
-	private JFormattedTextField formattedTextField;
-	private JFormattedTextField formattedTextField_1;
-	private JComboBox comboBox;
-	private JButton btnStart;
+	private JFormattedTextField jFormattedTextFieldyDimension;
+	private JFormattedTextField jFormattedTextFieldxDimension;
+	private JComboBox jComboBoxAnfangsverteilung;
+	private JButton jButtonStart;
 	private JLabel lblBesetzungsdichte;
-	private JFormattedTextField formattedTextField_2;
-	private JCheckBox chckbxPeriodischeRandbedingungen;
-	private JCheckBox chckbxEntwicklungenBisZum;
+	private JFormattedTextField jFormattedTextFieldInitialeBesetzungsdichte;
+	private JCheckBox jCheckBoxIsPeriodischeRandbedingung;
+	private JCheckBox jCheckBoxEndlosschleife;
 	private JLabel lblGenerationen;
-	private JFormattedTextField formattedTextField_3;
-
+	private JFormattedTextField jFormattedTextFieldGenerationen;
+	
+	GameOfLifeController gameOfLifeController;
+	
 	/**
 	 * Create the frame.
 	 */
-	public GameOfLifeMaske() {
+	public GameOfLifeMaske(GameOfLifeController gameOfLifeController) {
+		
+		this.gameOfLifeController = gameOfLifeController;
+		
 		setTitle("Conway's Game of Life");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -93,15 +100,15 @@ public class GameOfLifeMaske extends JFrame {
 		gbc_lblDimensionxrichtung.gridy = 0;
 		jPanelEinstellungen.add(lblDimensionxrichtung, gbc_lblDimensionxrichtung);
 		
-		formattedTextField_1 = new JFormattedTextField();
-		formattedTextField_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		formattedTextField_1.setText("400");
-		GridBagConstraints gbc_formattedTextField_1 = new GridBagConstraints();
-		gbc_formattedTextField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_formattedTextField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_formattedTextField_1.gridx = 1;
-		gbc_formattedTextField_1.gridy = 0;
-		jPanelEinstellungen.add(formattedTextField_1, gbc_formattedTextField_1);
+		jFormattedTextFieldxDimension = new JFormattedTextField();
+		jFormattedTextFieldxDimension.setHorizontalAlignment(SwingConstants.RIGHT);
+		jFormattedTextFieldxDimension.setText("400");
+		GridBagConstraints gbc_jFormattedTextFieldxDimension = new GridBagConstraints();
+		gbc_jFormattedTextFieldxDimension.insets = new Insets(0, 0, 5, 0);
+		gbc_jFormattedTextFieldxDimension.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jFormattedTextFieldxDimension.gridx = 1;
+		gbc_jFormattedTextFieldxDimension.gridy = 0;
+		jPanelEinstellungen.add(jFormattedTextFieldxDimension, gbc_jFormattedTextFieldxDimension);
 		
 		lblDimensionyrichtung = new JLabel("Dimension (y-Richtung)");
 		GridBagConstraints gbc_lblDimensionyrichtung = new GridBagConstraints();
@@ -111,15 +118,15 @@ public class GameOfLifeMaske extends JFrame {
 		gbc_lblDimensionyrichtung.gridy = 1;
 		jPanelEinstellungen.add(lblDimensionyrichtung, gbc_lblDimensionyrichtung);
 		
-		formattedTextField = new JFormattedTextField();
-		formattedTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		formattedTextField.setText("400");
-		GridBagConstraints gbc_formattedTextField = new GridBagConstraints();
-		gbc_formattedTextField.insets = new Insets(0, 0, 5, 0);
-		gbc_formattedTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_formattedTextField.gridx = 1;
-		gbc_formattedTextField.gridy = 1;
-		jPanelEinstellungen.add(formattedTextField, gbc_formattedTextField);
+		jFormattedTextFieldyDimension = new JFormattedTextField();
+		jFormattedTextFieldyDimension.setHorizontalAlignment(SwingConstants.RIGHT);
+		jFormattedTextFieldyDimension.setText("400");
+		GridBagConstraints gbc_jFormattedTextFieldyDimension = new GridBagConstraints();
+		gbc_jFormattedTextFieldyDimension.insets = new Insets(0, 0, 5, 0);
+		gbc_jFormattedTextFieldyDimension.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jFormattedTextFieldyDimension.gridx = 1;
+		gbc_jFormattedTextFieldyDimension.gridy = 1;
+		jPanelEinstellungen.add(jFormattedTextFieldyDimension, gbc_jFormattedTextFieldyDimension);
 		
 		lblLebensdauerms = new JLabel("Lebensdauer (ms)");
 		GridBagConstraints gbc_lblLebensdauerms = new GridBagConstraints();
@@ -146,15 +153,15 @@ public class GameOfLifeMaske extends JFrame {
 		gbc_lblBesetzungsdichte.gridy = 3;
 		jPanelEinstellungen.add(lblBesetzungsdichte, gbc_lblBesetzungsdichte);
 		
-		formattedTextField_2 = new JFormattedTextField();
-		formattedTextField_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		formattedTextField_2.setText("50");
-		GridBagConstraints gbc_formattedTextField_2 = new GridBagConstraints();
-		gbc_formattedTextField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_formattedTextField_2.insets = new Insets(0, 0, 5, 0);
-		gbc_formattedTextField_2.gridx = 1;
-		gbc_formattedTextField_2.gridy = 3;
-		jPanelEinstellungen.add(formattedTextField_2, gbc_formattedTextField_2);
+		jFormattedTextFieldInitialeBesetzungsdichte = new JFormattedTextField();
+		jFormattedTextFieldInitialeBesetzungsdichte.setHorizontalAlignment(SwingConstants.RIGHT);
+		jFormattedTextFieldInitialeBesetzungsdichte.setText("50");
+		GridBagConstraints gbc_jFormattedTextFieldInitialeBesetzungsdichte = new GridBagConstraints();
+		gbc_jFormattedTextFieldInitialeBesetzungsdichte.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jFormattedTextFieldInitialeBesetzungsdichte.insets = new Insets(0, 0, 5, 0);
+		gbc_jFormattedTextFieldInitialeBesetzungsdichte.gridx = 1;
+		gbc_jFormattedTextFieldInitialeBesetzungsdichte.gridy = 3;
+		jPanelEinstellungen.add(jFormattedTextFieldInitialeBesetzungsdichte, gbc_jFormattedTextFieldInitialeBesetzungsdichte);
 		
 		lblAnfangsverteilung = new JLabel("Anfangsverteilung");
 		GridBagConstraints gbc_lblAnfangsverteilung = new GridBagConstraints();
@@ -164,23 +171,23 @@ public class GameOfLifeMaske extends JFrame {
 		gbc_lblAnfangsverteilung.gridy = 4;
 		jPanelEinstellungen.add(lblAnfangsverteilung, gbc_lblAnfangsverteilung);
 		
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Gleichverteilt", "Normalverteilt"}));
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.insets = new Insets(0, 0, 5, 0);
-		gbc_comboBox.anchor = GridBagConstraints.EAST;
-		gbc_comboBox.gridx = 1;
-		gbc_comboBox.gridy = 4;
-		jPanelEinstellungen.add(comboBox, gbc_comboBox);
+		jComboBoxAnfangsverteilung = new JComboBox();
+		jComboBoxAnfangsverteilung.setModel(new DefaultComboBoxModel(new String[] {"Gleichverteilt", "Normalverteilt"}));
+		GridBagConstraints gbc_jComboBoxAnfangsverteilung = new GridBagConstraints();
+		gbc_jComboBoxAnfangsverteilung.insets = new Insets(0, 0, 5, 0);
+		gbc_jComboBoxAnfangsverteilung.anchor = GridBagConstraints.EAST;
+		gbc_jComboBoxAnfangsverteilung.gridx = 1;
+		gbc_jComboBoxAnfangsverteilung.gridy = 4;
+		jPanelEinstellungen.add(jComboBoxAnfangsverteilung, gbc_jComboBoxAnfangsverteilung);
 		
-		chckbxEntwicklungenBisZum = new JCheckBox("Entwicklung bis zum Tod");
-		GridBagConstraints gbc_chckbxEntwicklungenBisZum = new GridBagConstraints();
-		gbc_chckbxEntwicklungenBisZum.anchor = GridBagConstraints.EAST;
-		gbc_chckbxEntwicklungenBisZum.gridwidth = 2;
-		gbc_chckbxEntwicklungenBisZum.insets = new Insets(0, 0, 5, 0);
-		gbc_chckbxEntwicklungenBisZum.gridx = 0;
-		gbc_chckbxEntwicklungenBisZum.gridy = 5;
-		jPanelEinstellungen.add(chckbxEntwicklungenBisZum, gbc_chckbxEntwicklungenBisZum);
+		jCheckBoxEndlosschleife = new JCheckBox("Entwicklung bis zum Tod");
+		GridBagConstraints gbc_jCheckBoxEndlosschleife = new GridBagConstraints();
+		gbc_jCheckBoxEndlosschleife.anchor = GridBagConstraints.EAST;
+		gbc_jCheckBoxEndlosschleife.gridwidth = 2;
+		gbc_jCheckBoxEndlosschleife.insets = new Insets(0, 0, 5, 0);
+		gbc_jCheckBoxEndlosschleife.gridx = 0;
+		gbc_jCheckBoxEndlosschleife.gridy = 5;
+		jPanelEinstellungen.add(jCheckBoxEndlosschleife, gbc_jCheckBoxEndlosschleife);
 		
 		lblGenerationen = new JLabel("Generationen");
 		lblGenerationen.setEnabled(false);
@@ -191,32 +198,51 @@ public class GameOfLifeMaske extends JFrame {
 		gbc_lblGenerationen.gridy = 6;
 		jPanelEinstellungen.add(lblGenerationen, gbc_lblGenerationen);
 		
-		formattedTextField_3 = new JFormattedTextField();
-		formattedTextField_3.setHorizontalAlignment(SwingConstants.RIGHT);
-		formattedTextField_3.setEnabled(false);
-		formattedTextField_3.setText("1000");
-		GridBagConstraints gbc_formattedTextField_3 = new GridBagConstraints();
-		gbc_formattedTextField_3.insets = new Insets(0, 0, 5, 0);
-		gbc_formattedTextField_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_formattedTextField_3.gridx = 1;
-		gbc_formattedTextField_3.gridy = 6;
-		jPanelEinstellungen.add(formattedTextField_3, gbc_formattedTextField_3);
+		jFormattedTextFieldGenerationen = new JFormattedTextField();
+		jFormattedTextFieldGenerationen.setHorizontalAlignment(SwingConstants.RIGHT);
+		jFormattedTextFieldGenerationen.setEnabled(false);
+		jFormattedTextFieldGenerationen.setText("1000");
+		GridBagConstraints gbc_jFormattedTextFieldGenerationen = new GridBagConstraints();
+		gbc_jFormattedTextFieldGenerationen.insets = new Insets(0, 0, 5, 0);
+		gbc_jFormattedTextFieldGenerationen.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jFormattedTextFieldGenerationen.gridx = 1;
+		gbc_jFormattedTextFieldGenerationen.gridy = 6;
+		jPanelEinstellungen.add(jFormattedTextFieldGenerationen, gbc_jFormattedTextFieldGenerationen);
 		
-		chckbxPeriodischeRandbedingungen = new JCheckBox("Periodische Randbedingungen");
-		GridBagConstraints gbc_chckbxPeriodischeRandbedingungen = new GridBagConstraints();
-		gbc_chckbxPeriodischeRandbedingungen.anchor = GridBagConstraints.EAST;
-		gbc_chckbxPeriodischeRandbedingungen.gridwidth = 2;
-		gbc_chckbxPeriodischeRandbedingungen.insets = new Insets(0, 0, 5, 0);
-		gbc_chckbxPeriodischeRandbedingungen.gridx = 0;
-		gbc_chckbxPeriodischeRandbedingungen.gridy = 7;
-		jPanelEinstellungen.add(chckbxPeriodischeRandbedingungen, gbc_chckbxPeriodischeRandbedingungen);
+		jCheckBoxIsPeriodischeRandbedingung = new JCheckBox("Periodische Randbedingungen");
+		GridBagConstraints gbc_jCheckBoxIsPeriodischeRandbedingung = new GridBagConstraints();
+		gbc_jCheckBoxIsPeriodischeRandbedingung.anchor = GridBagConstraints.EAST;
+		gbc_jCheckBoxIsPeriodischeRandbedingung.gridwidth = 2;
+		gbc_jCheckBoxIsPeriodischeRandbedingung.insets = new Insets(0, 0, 5, 0);
+		gbc_jCheckBoxIsPeriodischeRandbedingung.gridx = 0;
+		gbc_jCheckBoxIsPeriodischeRandbedingung.gridy = 7;
+		jPanelEinstellungen.add(jCheckBoxIsPeriodischeRandbedingung, gbc_jCheckBoxIsPeriodischeRandbedingung);
 		
-		btnStart = new JButton("Start");
-		GridBagConstraints gbc_btnStart = new GridBagConstraints();
-		gbc_btnStart.gridwidth = 2;
-		gbc_btnStart.gridx = 0;
-		gbc_btnStart.gridy = 8;
-		jPanelEinstellungen.add(btnStart, gbc_btnStart);
+		jButtonStart = new JButton("Start");
+		jButtonStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				GameOfLifeDatenmodell gameOfLifeDatenmodell = new GameOfLifeDatenmodell();
+				
+				gameOfLifeDatenmodell.setxDimension(Integer.parseInt(jFormattedTextFieldxDimension.getText()));
+				gameOfLifeDatenmodell.setyDimension(Integer.parseInt(jFormattedTextFieldyDimension.getText()));
+				gameOfLifeDatenmodell.setInitialeBesetzungsdichte(Integer.parseInt(jFormattedTextFieldInitialeBesetzungsdichte.getText()));
+				gameOfLifeDatenmodell.setInitialeVerteilung((Verteilungstyp)(jComboBoxAnfangsverteilung.getSelectedItem()));
+				gameOfLifeDatenmodell.setLebensdauer(Integer.parseInt((String)(jSpinnerLebensdauer.getValue())));
+				gameOfLifeDatenmodell.setGenerationen(Integer.parseInt(jFormattedTextFieldGenerationen.getText()));
+				
+				GameOfLifeMaske.this.getGameOfLifeController().intialisiereGameOfLife(gameOfLifeDatenmodell);
+			}
+		});
+		GridBagConstraints gbc_jButtonStart = new GridBagConstraints();
+		gbc_jButtonStart.gridwidth = 2;
+		gbc_jButtonStart.gridx = 0;
+		gbc_jButtonStart.gridy = 8;
+		jPanelEinstellungen.add(jButtonStart, gbc_jButtonStart);
+	}
+	
+	private GameOfLifeController getGameOfLifeController() {
+		return this.gameOfLifeController;
 	}
 	
 	public void setGameOfLifeAlsBild(BufferedImage gameOfLifeAlsBild) {

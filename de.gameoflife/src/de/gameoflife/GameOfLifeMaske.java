@@ -172,7 +172,7 @@ public class GameOfLifeMaske extends JFrame {
 		jPanelEinstellungen.add(lblAnfangsverteilung, gbc_lblAnfangsverteilung);
 		
 		jComboBoxAnfangsverteilung = new JComboBox();
-		jComboBoxAnfangsverteilung.setModel(new DefaultComboBoxModel(new String[] {"Gleichverteilt", "Normalverteilt"}));
+		jComboBoxAnfangsverteilung.setModel(new DefaultComboBoxModel(Verteilungstyp.values()));
 		GridBagConstraints gbc_jComboBoxAnfangsverteilung = new GridBagConstraints();
 		gbc_jComboBoxAnfangsverteilung.insets = new Insets(0, 0, 5, 0);
 		gbc_jComboBoxAnfangsverteilung.anchor = GridBagConstraints.EAST;
@@ -228,7 +228,7 @@ public class GameOfLifeMaske extends JFrame {
 				gameOfLifeDatenmodell.setyDimension(Integer.parseInt(jFormattedTextFieldyDimension.getText()));
 				gameOfLifeDatenmodell.setInitialeBesetzungsdichte(Integer.parseInt(jFormattedTextFieldInitialeBesetzungsdichte.getText()));
 				gameOfLifeDatenmodell.setInitialeVerteilung((Verteilungstyp)(jComboBoxAnfangsverteilung.getSelectedItem()));
-				gameOfLifeDatenmodell.setLebensdauer(Integer.parseInt((String)(jSpinnerLebensdauer.getValue())));
+				gameOfLifeDatenmodell.setLebensdauer(((Integer)jSpinnerLebensdauer.getValue()).intValue());
 				gameOfLifeDatenmodell.setGenerationen(Integer.parseInt(jFormattedTextFieldGenerationen.getText()));
 				
 				GameOfLifeMaske.this.getGameOfLifeController().intialisiereGameOfLife(gameOfLifeDatenmodell);

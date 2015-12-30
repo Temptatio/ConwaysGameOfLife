@@ -2,6 +2,9 @@ package de.gameoflife;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * Testkommentar
+ */
 public class Gitter {
 
 	private final int	xDim;
